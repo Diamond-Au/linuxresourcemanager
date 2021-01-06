@@ -1,30 +1,48 @@
 const fs = require('fs')
+const path = require('path')
+const { stringToJson } = require('./stringToJson')
+
+
 /**
- * 获取CPU的信息的相关信息
+ * @description 获取CPU的信息的相关信息
  */
+
 function getCpuInfo() {
-  var res = fs.readFileSync('/proc/cpuinfo', { encoding: 'utf8' });
-  res = res.split('\n');
-  console.log(res)
+  const res = fs.readFileSync('/proc/cpuinfo', { encoding: 'utf8' });
+  const result = stringToJson(res);
+  return result;
+}
 
-  let info = []
-  let tmp = {}
-  for (let i = 0; i < res.length; i++) {
 
-    if (res[i] === '') {
-      info.push(tmp);
-      tmp = {}
+/**
+ * @description 获取系统已经运行的时间
+ */
+function getMachineRumTime() {
+  const time = fs.readFileSync('/proc/uptime', { encoding: "utf8" })
+  return time;
+}
+
+/**
+ * @description 获取每个进程的信息
+ */
+function getProcessInfo() {
+  const ProcesssInfos = fs.readdirSync('/proc');
+  const processes = []
+  ProcesssInfos.forEach(item => {
+
+    let finallPath = path.join('/proc', item)
+    let stat = fs.lstatSync(finallPath)
+    if (stat.isDirectory && !isNaN(Number(item))) {
+      const processinfo = fs.readFileSync(path.join(finallPath, '/status'), { encoding: 'utf8' })
+      processes.push(...stringToJson(processinfo))
     }
-    else {
-      let item = res[i].split(':');
-      let key = item[0].trim();
-      let value = item[1].trim()
-      if (!isNaN(Number(value))) {
-        value = Number(value);
-      }
-      tmp[key] = value;
-    }
-  }
-  return info;
+  })
+  return processes;
+}
 
+
+module.exports = {
+  getCpuInfo,
+  getMachineRumTime,
+  getProcessInfo
 }
