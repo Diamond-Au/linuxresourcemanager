@@ -1,5 +1,6 @@
-const { app, BrowserWindow } = require('electron')
-const fs = require('fs')
+const { app, BrowserWindow, Menu, MenuItem } = require('electron')
+const { MenuItems } = require('./config/config')
+
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -9,9 +10,15 @@ function createWindow() {
       nodeIntegration: true
     }
   })
+  const items = MenuItems.map(item => {
+    return new MenuItem(item)
+  })
 
-  const res = fs.readdirSync('/proc')
-  console.log(res)
+  const menu = new Menu();
+  items.forEach(item => {
+    menu.append(item)
+  })
+  win.setMenu(menu)
   win.loadFile('./index.html')
 }
 
