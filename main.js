@@ -1,5 +1,6 @@
 const { app, BrowserWindow, Menu, MenuItem } = require('electron')
 const { MenuItems } = require('./config/config')
+const { Emitter } = require('./utils/events')
 
 
 function createWindow() {
@@ -10,6 +11,7 @@ function createWindow() {
       nodeIntegration: true
     }
   })
+
   const items = MenuItems.map(item => {
     return new MenuItem(item)
   })
@@ -19,7 +21,22 @@ function createWindow() {
     menu.append(item)
   })
   win.setMenu(menu)
-  win.loadFile('./index.html')
+
+  win.loadFile('./index.html');
+  win.webContents.openDevTools();
+  Emitter.on('source', function () {
+    win.loadFile('./tem/source.html');
+  })
+  Emitter.on('innerMemory', function () {
+    win.loadFile('./tem/innerMemory.html')
+  })
+  Emitter.on('information', function () {
+    win.loadFile('./tem/information.html')
+  })
+  Emitter.on('infomationPage', function () {
+    win.loadFile('./tem/test.html')
+  })
+
 }
 
 

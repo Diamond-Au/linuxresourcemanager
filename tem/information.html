@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OSINFOMATION</title>
+    <style>
+      html,
+      body {
+        width: 100%;
+        overflow-x: hidden;
+      }
+      .container {
+        width: 500px;
+        margin: 0 auto;
+      }
+      #cpu-info {
+        width: 90%;
+        margin: 0 auto 50px auto;
+        border: 1px solid #ccc;
+        padding: 10px 50px;
+      }
+      
+      #cpu-info .list .list-item {
+        border: 1px solid #ccc;
+        margin: 20px auto;
+        padding: 10px;
+      } 
+      #os-infos {
+        width: 90%;
+        margin: 150px auto;
+        border: 1px solid #ccc;
+        padding: 10px 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div id="cpu-info"></div>
+      <div id="os-infos">
+        <h1>OSINFO</h1>
+      </div>
+    </div>
+  </body>
+  <script>
+    let osInfo = null;
+    window.onload = function () {
+      console.log("information paga load");
+      if (osInfo !== null) {
+        // reduce the load times
+        return;
+      }
+      console.log("fetch data");
+      const {
+        getComputerVersion,
+        getComputerCpuInfo,
+      } = require("../utils/index.js");
+      const { renderOsInfo, renderCpuInfo } = require("../utils/render.js");
+      let osinfo = document.getElementById("os-infos");
+      let cpuinfo = document.getElementById("cpu-info");
+
+      /*
+       * deal with the os-info
+       */
+      let osinfoResult = getComputerVersion();
+      let template = renderOsInfo(osinfoResult);
+      osinfo.innerHTML += template;
+
+      /*
+       * deal with the CPU-info
+       */
+
+      let cpuInfoResult = getComputerCpuInfo();
+      template = renderCpuInfo(cpuInfoResult);
+      cpuinfo.innerHTML += template;
+      console.log(cpuInfoResult);
+    };
+  </script>
+</html>

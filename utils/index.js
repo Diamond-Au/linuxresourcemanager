@@ -1,4 +1,5 @@
-const fs = require('fs')
+const fs = require('fs');
+const { version } = require('os');
 const path = require('path')
 const { stringToJson } = require('./stringToJson')
 
@@ -41,8 +42,34 @@ function getProcessInfo() {
 }
 
 
+/**
+ * @description get the computer current version
+ */
+
+function getComputerVersion() {
+  let version = fs.readFileSync('/proc/version', { encoding: 'utf8' });
+  version = stringToJson(version);
+  return version;
+
+}
+
+
+/**
+ * @default get the computer current CPU info
+ */
+
+
+ function getComputerCpuInfo() {
+   let cpuinfo = fs.readFileSync('/proc/cpuinfo', {encoding:'utf8'})
+   cpuinfo = stringToJson(cpuinfo);
+   return cpuinfo;
+ }
+
+
 module.exports = {
   getCpuInfo,
   getMachineRumTime,
-  getProcessInfo
+  getProcessInfo,
+  getComputerVersion,
+  getComputerCpuInfo
 }
