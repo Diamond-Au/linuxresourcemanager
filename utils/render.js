@@ -65,4 +65,46 @@ function renderCpuInfo(cpuInfoResult) {
 }
 
 
-module.exports = { renderOsInfo, renderCpuInfo }
+
+function renderProcessInfo(processInfo) {
+
+  /**
+   * 
+   * @description  format
+   */
+  function getMemory(item) {
+    let memory = (parseInt(item) / 1024).toFixed(2);
+    return isNaN(memory) ? '0MB' : memory + "MB";
+  }
+
+
+
+  let template = `
+    <div class="processinfo-box">
+      <div class="header">
+        <span class="name">NAME</span>
+        <span class="pid">PID</span>
+        <span class="state">STATE</span>
+        <span class="memory">MEMORY</span>
+        <span class="share-memeory-size">SHAREED MEMORY</span>
+      </div>
+      <div class="info-content">
+        <% processInfo.forEach(item => {%>
+          <div class="info-content-box" data-pid=<%= item.Pid %>>
+            <span class="name"><%= item.Name%></span>
+            <span class="pid"><%= item.Pid%></span>
+            <span class="state"><%= item.State%></span>
+            <span class="memory"><%= getMemory(item["VmRSS"])%></span>
+            <span class="share-memeory-size"><%= getMemory(item["VmLib"])%></span>
+          </div>
+        <%}) %>
+      </div>
+    </div>
+  `
+  template = ejs.render(template, { processInfo, getMemory })
+  return template;
+}
+
+
+
+module.exports = { renderOsInfo, renderCpuInfo, renderProcessInfo }

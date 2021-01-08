@@ -24,19 +24,29 @@ function createWindow() {
 
   win.loadFile('./index.html');
   win.webContents.openDevTools();
+
+  // source page
   Emitter.on('source', function () {
     win.loadFile('./tem/source.html');
   })
+
+  // memory page
   Emitter.on('innerMemory', function () {
     win.loadFile('./tem/innerMemory.html')
   })
+
+  // informatin page
   Emitter.on('information', function () {
     win.loadFile('./tem/information.html')
   })
-  Emitter.on('infomationPage', function () {
-    win.loadFile('./tem/test.html')
+  Emitter.on('disk', function () {
+    win.loadFile('./tem/diskstats.html')
   })
 
+  Emitter.on('process', function () {
+    win.loadFile('./tem/process/index.html')
+
+  })
 }
 
 

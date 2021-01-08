@@ -1,0 +1,108 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.processinfo-box {
+  width: 100%;
+  background-color: #343434;
+}
+.processinfo-box .header {
+  width: 100%;
+  color: #8e8b80;
+  position: fixed;
+  top: 0;
+
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-around;
+  background-color: #343434;
+  align-items: center;
+  border-bottom: 1px solid #343434;
+  box-shadow: 0 0 5px #343434;
+}
+
+.processinfo-box .header span {
+  width: 20%;
+  text-align: left;
+}
+
+.processinfo-box .info-content {
+  top: 40px;
+  margin-top: 40px;
+  color: white;
+}
+
+.processinfo-box .info-content .info-content-box {
+  padding: 6px 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom: 1px solid #343434;
+}
+
+.processinfo-box .info-content .info-content-box.active {
+  background-color: #df4a16;
+}
+
+.processinfo-box .info-content .info-content-box:hover {
+  background-color: #8e8b80;
+}
+
+.processinfo-box .info-content .info-content-box:hover:active {
+  background-color: rebeccapurple;
+}
+
+.processinfo-box .info-content .info-content-box span {
+  width: 20%;
+}
+
+#operator {
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+  padding: 10px 20px;
+  bottom: 0;
+  left: 0;
+  background-color: #3e3e3e;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+#operator .button {
+  display: inline-block;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+#operator .button.kill {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+#operator .button.refresh {
+  color: #fff;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+#operator .process-count {
+  transform: translateX(-30px);
+}

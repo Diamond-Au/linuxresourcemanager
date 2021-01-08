@@ -6,6 +6,16 @@
     <title>Document</title>
   </head>
   <body>
-    InnerMemory
+    <div id="process-info"></div>
   </body>
+  <script>
+    const { getProcessInfo } = require("../utils/index.js");
+    const { renderProcessInfo } = require("../utils/render.js");
+    const processInfo = document.getElementById("process-info");
+    window.onload = function () {
+      let processInfoResult = getProcessInfo();
+      let template = renderProcessInfo(processInfoResult);
+      processInfo.innerHTML += template;
+    };
+  </script>
 </html>

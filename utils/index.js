@@ -55,7 +55,7 @@ function getComputerVersion() {
 
 
 /**
- * @default get the computer current CPU info
+ * @description get the computer current CPU info
  */
 
 
@@ -65,11 +65,23 @@ function getComputerVersion() {
    return cpuinfo;
  }
 
+/**
+ * @description get the diskstats infomation
+ */
+
+ function getComputerDiskstatsInfo() {
+   let diskstatsInfo = fs.readFileSync('/proc/diskstats', {encoding: 'utf8'});
+  //  diskstatsInfo = stringToJson(diskstatsInfo);
+   return diskstatsInfo;
+ }
+
+
 
 module.exports = {
   getCpuInfo,
   getMachineRumTime,
   getProcessInfo,
   getComputerVersion,
-  getComputerCpuInfo
+  getComputerCpuInfo,
+  getComputerDiskstatsInfo
 }
