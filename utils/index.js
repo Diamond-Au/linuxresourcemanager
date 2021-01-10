@@ -106,6 +106,34 @@ function getComputerNetInfo() {
   }
 }
 
+
+/**
+ * @description get the swap size
+ */
+
+function getComputerSwapInfo() {
+  let SwapInfo = fs.readFileSync('/proc/swaps', { encoding: 'utf8' });
+  SwapInfo = SwapInfo.split('\n')[1].split(/\s/).filter(str => str !== "")
+  return {
+    size: SwapInfo[2],
+    used: SwapInfo[3]
+  }
+}
+
+/**
+ * 
+ * @description  format KBToMB
+ */
+function getMemory(item) {
+  let memory = (parseInt(item) / 1024).toFixed(2);
+  return isNaN(memory) ? '0MB' : memory + "MB";
+}
+
+
+function kbToGB(num, dit) {
+  return (num / 1024 / 1024).toFixed(dit)
+}
+
 module.exports = {
   getCpuInfo,
   getMachineRumTime,
@@ -114,5 +142,8 @@ module.exports = {
   getComputerCpuInfo,
   getComputerDiskstatsInfo,
   getComputerMemotyInfo,
-  getComputerNetInfo
+  getComputerNetInfo,
+  getComputerSwapInfo,
+  getMemory,
+  kbToGB
 }

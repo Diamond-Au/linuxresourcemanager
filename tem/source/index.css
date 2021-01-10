@@ -10,6 +10,21 @@ body {
   width: 100%;
 }
 
+.memory-wrapper {
+  display: flex;
+  justify-content: space-around;
+}
+
+.memory-wrapper .swap-info h1,
+.memory-wrapper .memory-info h1 {
+  text-align: center;
+}
+
+.memory-wrapper .swap-info .swap-detail,
+.memory-wrapper .memory-info .memory-detail {
+  text-align: center;
+}
+
 .container .info {
   display: flex;
   justify-content: center;

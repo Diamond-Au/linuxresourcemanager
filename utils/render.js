@@ -1,4 +1,5 @@
 const ejs = require('ejs');
+const { getMemory } = require('./index')
 function renderOsInfo(result) {
   result = JSON.stringify(result[0]);
   result = result.split(" ");
@@ -83,14 +84,7 @@ function renderProcessInfo(processInfo) {
 }
 
 
-/**
- * 
- * @description  format KBToMB
- */
-function getMemory(item) {
-  let memory = (parseInt(item) / 1024).toFixed(2);
-  return isNaN(memory) ? '0MB' : memory + "MB";
-}
+
 
 
 
@@ -124,7 +118,7 @@ function renderDiskinfo(diskinfo) {
       </div>
     <% }%>
   `
-  template = ejs.render(template, {diskinfo})
+  template = ejs.render(template, { diskinfo })
   return template
 }
 

@@ -32,6 +32,33 @@ let MenuItems = [
   }
 ]
 
+function getSwapOpstion(data) {
+  return option = {
+    series: [
+      {
+        name: '访问来源',
+        type: 'pie',
+        radius: '55%',
+        center: ['50%', '60%'],
+        data: [
+          { value: data.left, name: 'left', color: "#00ff00" },
+          { value: data.used, name: 'used', color: "#df4a16" },
+
+        ],
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        },
+      }
+    ]
+  };;
+
+}
+
 module.exports = {
-  MenuItems
+  MenuItems,
+  getSwapOpstion
 }
