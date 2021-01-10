@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DISKINFO</title>
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
+    <div class="diskinfo">
+      <div class="diskinfo-header">
+        <span class="major">major</span>
+        <span class="minor">minor</span>
+        <span class="blocks">block</span>
+        <span class="name">name</span>
+      </div>
+      <div class="diskinfo-main" id="diskinfo-main"></div>
+    </div>
+  </body>
+  <script>
+    const { getComputerDiskstatsInfo } = require("../../utils/index.js");
+    const { renderDiskinfo } = require("../../utils/render.js");
+    window.onload = function () {
+      let diskinfoMain = document.getElementById("diskinfo-main")
+      let diskinfo = getComputerDiskstatsInfo();
+      diskinfo = diskinfo.split("\n");
+      let template = renderDiskinfo(diskinfo)
+      diskinfoMain.innerHTML = template
+    };
+  </script>
+</html>

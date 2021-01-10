@@ -1,3 +1,4 @@
+const { net } = require('electron');
 const fs = require('fs');
 const { version } = require('os');
 const path = require('path')
@@ -59,23 +60,51 @@ function getComputerVersion() {
  */
 
 
- function getComputerCpuInfo() {
-   let cpuinfo = fs.readFileSync('/proc/cpuinfo', {encoding:'utf8'})
-   cpuinfo = stringToJson(cpuinfo);
-   return cpuinfo;
- }
+function getComputerCpuInfo() {
+  let cpuinfo = fs.readFileSync('/proc/cpuinfo', { encoding: 'utf8' })
+  cpuinfo = stringToJson(cpuinfo);
+  return cpuinfo;
+}
 
 /**
- * @description get the diskstats infomation
+ * @description get the disk infomation
  */
 
- function getComputerDiskstatsInfo() {
-   let diskstatsInfo = fs.readFileSync('/proc/diskstats', {encoding: 'utf8'});
-  //  diskstatsInfo = stringToJson(diskstatsInfo);
-   return diskstatsInfo;
- }
+function getComputerDiskstatsInfo() {
+  // /proc/partitions 
+  let result = []
+  let diskstatsInfo = fs.readFileSync('/proc/partitions', { encoding: 'utf8' });
+  // diskstatsInfo = stringToJson(diskstatsInfo)
+  return diskstatsInfo;
+}
 
 
+/**
+ * @description get the memoryinfo
+ */
+
+function getComputerMemotyInfo() {
+  let memoryinfo = fs.readFileSync('/proc/meminfo', { encoding: 'utf8' });
+  memoryinfo = stringToJson(memoryinfo);
+  return memoryinfo;
+}
+
+
+/**
+ * @description get the net info
+ */
+
+function getComputerNetInfo() {
+  let netInfo = fs.readFileSync('/proc/net/dev', { encoding: 'utf8' });
+  netInfo = netInfo.split('\n')[2].trim().replace(/lo:/, '').split(/\s/)
+  netInfo = netInfo.filter(item => item !== "")
+  return {
+    resiveBytes: netInfo[0],
+    resivePacks: netInfo[1],
+    sendBytes: netInfo[8],
+    sendPacks: netInfo[9]
+  }
+}
 
 module.exports = {
   getCpuInfo,
@@ -83,5 +112,7 @@ module.exports = {
   getProcessInfo,
   getComputerVersion,
   getComputerCpuInfo,
-  getComputerDiskstatsInfo
+  getComputerDiskstatsInfo,
+  getComputerMemotyInfo,
+  getComputerNetInfo
 }

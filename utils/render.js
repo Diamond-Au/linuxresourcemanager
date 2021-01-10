@@ -8,76 +8,53 @@ function renderOsInfo(result) {
   osInfo.gccInfo = result[6].replace(")", "");
   osInfo.host = result[5].replace("(", "");
   let template = `
-        <div>
-          <div class="os-info">
+          <div>
             <span>hostname:</span>
             <span class="title">${osInfo.host}</span>  
           </div>
-          <div class="os-info">
+          <div>
             <span>type:</span>
             <span class="title">${osInfo.type}</span>  
           </div>
-          <div class="os-info">
+          <div>
             <span>gccInfo:</span>
             <span class="title">${osInfo.gccInfo}</span>  
           </div>
-          <div class="os-info">
+          <div>
             <span>OSversion:</span>
             <span class="title">${osInfo.version}</span>  
           </div>
-        </div>
       `;
   return template
 }
 
 
-function renderCpuInfo(cpuInfoResult) {
+function renderCpuInfo(cpuInfoResult, length) {
   let template = `
-  <div class="list">
-    <% cpuInfoResult.forEach((item, index) => { %>
-      <div class="list-item">
-        <div>
-          <span>apicid:</span>
-          <span><%= item.apicid%></span>
-        </div>
         <div>
           <span>cpu MHz:</span>
-          <span><%= item['cpu MHz']%></span>
+          <span><%= cpuInfoResult['cpu MHz']%></span>
         </div>
         <div>
           <span>cpu cores:</span>
-          <span><%= item['cpu cores']%></span>
+          <span><%= length%></span>
         </div>
         <div>
           <span>model name:</span>
-          <span><%= item['model name']%></span>
+          <span><%= cpuInfoResult['model name']%></span>
         </div>
         <div>
-          <span>initial apicid:</span>
-          <span><%= item['initial apicid']%></span>
-        </div>
-      </div>
-    <% })%>
-  <div>
+          <span> cache size</span
+          <span><%= cpuInfoResult['cache size']%></span>
+        <div>
   `
-  template = ejs.render(template, { cpuInfoResult });
+  template = ejs.render(template, { cpuInfoResult: cpuInfoResult[0], length });
   return template;
 }
 
 
 
 function renderProcessInfo(processInfo) {
-
-  /**
-   * 
-   * @description  format
-   */
-  function getMemory(item) {
-    let memory = (parseInt(item) / 1024).toFixed(2);
-    return isNaN(memory) ? '0MB' : memory + "MB";
-  }
-
-
 
   let template = `
     <div class="processinfo-box">
@@ -106,5 +83,50 @@ function renderProcessInfo(processInfo) {
 }
 
 
+/**
+ * 
+ * @description  format KBToMB
+ */
+function getMemory(item) {
+  let memory = (parseInt(item) / 1024).toFixed(2);
+  return isNaN(memory) ? '0MB' : memory + "MB";
+}
 
-module.exports = { renderOsInfo, renderCpuInfo, renderProcessInfo }
+
+
+function renderInnerMemoryInfo(MemoryInfo) {
+
+  let keys = Object.keys(MemoryInfo)
+  console.log(keys)
+  let template = `
+    <% keys.forEach(item => { %>
+     <div>
+      <span class="key"><%= item %></span>
+      <span class="value"><%= MemoryInfo[item]%></span>
+    </div>
+    <% })%>
+  `
+  template = ejs.render(template, { MemoryInfo: MemoryInfo, keys: keys })
+  return template
+}
+
+
+function renderDiskinfo(diskinfo) {
+  let template = `
+    <% for(let i=2; i< diskinfo.length;i++) { 
+      item = diskinfo[i].split(" ").filter(str => str !== "");
+    %>
+      <div class="item">
+        <span class="major"><%= item[0]%></span>
+        <span class="minor"><%= item[1]%></span>
+        <span class="block"><%= item[2]%></span>
+        <span class="name"><%= item[3]%><span>
+      </div>
+    <% }%>
+  `
+  template = ejs.render(template, {diskinfo})
+  return template
+}
+
+
+module.exports = { renderOsInfo, renderCpuInfo, renderProcessInfo, renderInnerMemoryInfo, renderDiskinfo }

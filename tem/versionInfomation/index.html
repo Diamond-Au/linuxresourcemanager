@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>version</title>
+    <link rel="stylesheet" href="./index.css">
+  </head>
+  <body>
+    <div class="cpu-info" id="cpu-info"></div>
+    <div class="version-info" id="version-info"></div>
+  </body>
+  <script>
+    const {
+      getComputerVersion,
+      getComputerCpuInfo,
+    } = require("../../utils/index.js");
+    const { renderCpuInfo, renderOsInfo } = require("../../utils/render.js");
+    window.onload = function () {
+      const cpuInfo = document.getElementById("cpu-info")
+      const versionInfo = document.getElementById("version-info")
+      let version = getComputerVersion();
+      let cpuinfo = getComputerCpuInfo();
+      let template = renderOsInfo(version);
+      versionInfo.innerHTML = template;
+      console.log(cpuinfo)
+      template = renderCpuInfo(cpuinfo, cpuinfo.length);
+      cpuInfo.innerHTML = template
+    };
+  </script>
+</html>

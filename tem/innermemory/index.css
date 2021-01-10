@@ -1,0 +1,43 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.memory-info {
+  width: 100%;
+  overflow-x: hidden;
+}
+.memory-info-header {
+  width: 100%;
+  position: fixed;
+  background-color: #343434;
+  padding: 10px;
+  top: 0;
+  color: #8e8b80;
+  display: flex;
+  justify-content: flex-start;
+  border-bottom: 1px solid white;
+}
+
+.memory-info-header span {
+  width: 300px;
+}
+
+.memory-info-main {
+  margin-top: 40px;
+  width: 100%;
+  background-color: #343434;
+  color: white;
+}
+.memory-info-main div {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.memory-info-main div:hover {
+  background-color: #8e8b80;
+}
+
+.memory-info-main div span {
+  width: 300px;
+  padding: 6px 10px;
+}

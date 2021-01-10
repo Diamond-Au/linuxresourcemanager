@@ -27,20 +27,21 @@ function createWindow() {
 
   // source page
   Emitter.on('source', function () {
-    win.loadFile('./tem/source.html');
+    win.loadFile('./tem/source/index.html');
   })
 
   // memory page
   Emitter.on('innerMemory', function () {
-    win.loadFile('./tem/innerMemory.html')
+    win.loadFile('./tem/innermemory/index.html')
   })
 
   // informatin page
   Emitter.on('information', function () {
-    win.loadFile('./tem/information.html')
+    win.loadFile('./tem/versionInfomation/index.html')
   })
+  // disk infomation
   Emitter.on('disk', function () {
-    win.loadFile('./tem/diskstats.html')
+    win.loadFile('./tem/diskInformation/index.html')
   })
 
   Emitter.on('process', function () {

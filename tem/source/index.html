@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SOURCEINFO</title>
+    <link rel="stylesheet" href="./index.css" />
+    <script src="./echarts.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="net-info">
+        <h1>net info</h1>
+        <div class="net" id="net" style="width: 90%; height: 400px"></div>
+        <div class="info">
+          <div class="resicive">
+            <div class="img">
+              <img src="../../img/res.png" alt="" style="width: 50px;height: 50px;">
+            </div>
+            <div class="detail">
+               <span id="res-speed"></span></br>
+               <span id="res-sum"></span>
+            </div>
+          </div>
+          <div class="send">
+            <div class="img">
+              <img src="../../img/send.png" alt="" style="width: 50px;height: 50px; transform: rotate(180deg);">
+            </div>
+            <div class="detail">
+              <span id="send-speed"></span><br>
+              <span id="send-sum"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    const { getComputerNetInfo } = require("../../utils/index.js");
+    const { Emitter } = require("../../utils/events.js");
+    var resSpeed = document.getElementById("res-speed");
+    var resSum = document.getElementById("res-sum");
+    var sendSpeed = document.getElementById("send-speed");
+    var sendSum = document.getElementById("send-sum");
+    function getNetSpeed(time) {
+      let {
+        resiveBytes,
+        resivePacks,
+        sendBytes,
+        sendPacks,
+      } = getComputerNetInfo();
+
+      setInterval(() => {
+        let res = getComputerNetInfo();
+
+        Emitter.emit("10s", {
+          resSpeed: parseInt((res.resiveBytes - resiveBytes) / time),
+          resivePacks: res.resivePacks,
+          sendSpeed: parseInt((res.sendBytes - sendBytes) / time),
+          sendPacks: res.sendPacks,
+        });
+        resiveBytes = res.resiveBytes;
+        resivePaacks = res.resivePaacks;
+        sendBytes = res.sendBytes;
+        sendPacks = res.sendPacks;
+      }, time * 1000);
+    }
+    window.onload = function () {
+      var netmyChart = echarts.init(document.getElementById("net"));
+
+      // 指定图表的配置项和数据
+      var netOption = {
+        title: {
+          text: '',
+        },
+
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: ["12", "10", "8", "6", "4", "2s"],
+        },
+        yAxis: {
+          type: "value",
+        },
+        series: [
+          {
+            name: "resSpeed",
+            type: "line",
+            stack: "总量",
+            data: [0, 0, 0, 0, 0, 0],
+          },
+          {
+            name: "sendSpeed",
+            type: "line",
+            stack: "总量",
+            data: [0, 0, 0, 0, 0, 0],
+          },
+        ],
+      };
+      netmyChart.setOption(netOption);
+      getNetSpeed(2);
+      Emitter.on("10s", function (data) {
+        console.log(data);
+        if (netOption.series[0].data.length > 5) {
+          netOption.series[0].data.shift();
+        }
+        netOption.series[0].data.push(data.sendSpeed);
+        if (netOption.series[1].data.length > 5) {
+          netOption.series[1].data.shift();
+        }
+        netOption.series[1].data.push(data.sendSpeed);
+
+        resSpeed.innerText = "dowload speed: " + data.resSpeed + "bytes/s";
+        resSum.innerText = "download sum: " + data.resivePacks + "bytes";
+        sendSpeed.innerText = "send speed: " + data.sendSpeed + "bytes/s";
+        sendSum.innerText = "send sum: " + data.sendPacks + "bytes";
+        netmyChart.setOption(netOption);
+      });
+    };
+  </script>
+</html>

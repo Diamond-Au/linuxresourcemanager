@@ -1,0 +1,44 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  background-color: #343434;
+}
+.diskinfo {
+  width: 100%;
+}
+
+.diskinfo-header {
+  background-color: #343434;
+  width: 100%;
+  position: fixed;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid white;
+  z-index: 10;
+}
+
+.diskinfo-header span {
+  width: 25%;
+  color: #ccc;
+}
+
+.diskinfo-main {
+  padding: 50px 0 0 0;
+}
+
+.diskinfo-main .item {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 10px;
+}
+
+.diskinfo-main .item:hover {
+  background-color: blueviolet;
+}
+.diskinfo-main .item span {
+  width: 25%;
+  color: #ccc;
+}

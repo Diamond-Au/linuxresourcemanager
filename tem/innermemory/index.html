@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MemotyInfo</title>
+    <link rel="stylesheet" href="./index.css">
+  </head>
+  <body>
+    <div class="memory-info">
+      <div class="memory-info-header">
+        <span class="name">NAME</span>
+        <span class="size">SIZE</span>
+      </div>
+      <div class="memory-info-main" id="memory-info-main"></div>
+    </div>
+  </body>
+
+  <script>
+    const { getComputerMemotyInfo } = require("../../utils/index.js");
+    const { renderInnerMemoryInfo } = require("../../utils/render.js");
+    window.onload = function () {
+      const memoryInfoMain = document.getElementById("memory-info-main");
+      const MemotyInfo = getComputerMemotyInfo();
+      let template = renderInnerMemoryInfo(MemotyInfo[0]);
+      memoryInfoMain.innerHTML = template;
+    };
+  </script>
+</html>
