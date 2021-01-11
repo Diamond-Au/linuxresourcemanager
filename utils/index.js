@@ -96,13 +96,24 @@ function getComputerMemotyInfo() {
 
 function getComputerNetInfo() {
   let netInfo = fs.readFileSync('/proc/net/dev', { encoding: 'utf8' });
-  netInfo = netInfo.split('\n')[2].trim().replace(/lo:/, '').split(/\s/)
-  netInfo = netInfo.filter(item => item !== "")
+  netInfo = netInfo.split('\n')
+  let newArr = []
+  newArr.push(netInfo[2]);
+  newArr.push(netInfo[3]);
+  newArr = newArr.map(item => {
+    return item.replace(/\s+/g, ' ').split(":")[1].trim()
+  })
+  let localnetInfo = newArr[0].split(" ");
+  let ennetInfo = newArr[1].split(' ');
+  let receiveBytes = parseInt(localnetInfo[0]) + parseInt(ennetInfo[0]);
+  let receivePacks = parseInt(localnetInfo[1]) + parseInt(ennetInfo[1]);
+  let sendBytes = parseInt(localnetInfo[8]) + parseInt(ennetInfo[8]);
+  let sendPacks = parseInt(localnetInfo[9]) + (ennetInfo[9]);
   return {
-    resiveBytes: netInfo[0],
-    resivePacks: netInfo[1],
-    sendBytes: netInfo[8],
-    sendPacks: netInfo[9]
+    receiveBytes,
+    receivePacks,
+    sendBytes,
+    sendPacks
   }
 }
 
@@ -124,7 +135,7 @@ function getComputerSwapInfo() {
  * 
  * @description  format KBToMB
  */
-function getMemory(item) {
+function KBToMB(item) {
   let memory = (parseInt(item) / 1024).toFixed(2);
   return isNaN(memory) ? '0MB' : memory + "MB";
 }
@@ -133,6 +144,12 @@ function getMemory(item) {
 function kbToGB(num, dit) {
   return (num / 1024 / 1024).toFixed(dit)
 }
+
+
+function byteToMB(num, dit = 0) {
+  return (num / 1024 / 1024).toFixed(dit);
+}
+
 
 module.exports = {
   getCpuInfo,
@@ -144,6 +161,7 @@ module.exports = {
   getComputerMemotyInfo,
   getComputerNetInfo,
   getComputerSwapInfo,
-  getMemory,
-  kbToGB
+  KBToMB,
+  kbToGB,
+  byteToMB
 }

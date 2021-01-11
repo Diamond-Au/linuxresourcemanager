@@ -32,7 +32,7 @@ let MenuItems = [
   }
 ]
 
-function getSwapOpstion(data) {
+function getMemoryOrSawpOption(data) {
   return option = {
     series: [
       {
@@ -41,8 +41,8 @@ function getSwapOpstion(data) {
         radius: '55%',
         center: ['50%', '60%'],
         data: [
-          { value: data.left, name: 'left', color: "#00ff00" },
-          { value: data.used, name: 'used', color: "#df4a16" },
+          { value: data.left, name: 'left', itemStyle: { color: "#2ed" } },
+          { value: data.used, name: 'used', itemStyle: { color: "#f80" } },
 
         ],
         emphasis: {
@@ -54,11 +54,61 @@ function getSwapOpstion(data) {
         },
       }
     ]
-  };;
+  };
+
+
 
 }
 
+function getReceiveOrSendOption(data = 0, type) {
+  let option = {
+
+    series: [
+      {
+        name: 'type',
+        type: 'gauge',
+        min: 0,
+        max: 10,
+        z: 3,
+        splitNumber: 10,
+        data: [{ value: data, name: 'MiB' }],
+        axisTick: {            // 坐标轴小标记
+          length: 15,        // 属性length控制线长
+          lineStyle: {       // 属性lineStyle控制线条样式
+            color: 'auto'
+          }
+        },
+        axisLine: {            // 坐标轴线
+          lineStyle: {       // 属性lineStyle控制线条样式
+            width: 10,
+            color: [[0.5, "#4b4be4"], [1, "#e011d6"]] /// 
+          }
+        },
+        axisLabel: {
+          backgroundColor: '#343434',
+          borderRadius: 2,
+          color: '#f80',
+          padding: 3,
+          textShadowBlur: 2,
+          textShadowOffsetX: 1,
+          textShadowOffsetY: 1,
+          textShadowColor: '#222'
+        },
+        splitLine: {           // 分隔线
+          length: 20,         // 属性length控制线长
+          lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+            color: 'auto'
+          }
+        },
+      }
+    ],
+
+  };
+  return option;
+
+}
 module.exports = {
   MenuItems,
-  getSwapOpstion
+  getMemoryOrSawpOption,
+  getReceiveOrSendOption
 }

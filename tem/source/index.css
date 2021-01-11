@@ -11,49 +11,56 @@ body {
 }
 
 .memory-wrapper {
+  margin: 40px 20px;
   display: flex;
   justify-content: space-around;
+  border: 2px solid #ddd;
+  padding: 10px;
+  border-image: linear-gradient(-45deg, #f80, #2ed) 20 20;
 }
 
 .memory-wrapper .swap-info h1,
 .memory-wrapper .memory-info h1 {
   text-align: center;
+  color: #f80;
 }
 
 .memory-wrapper .swap-info .swap-detail,
 .memory-wrapper .memory-info .memory-detail {
   text-align: center;
+  background: linear-gradient(-45deg, #f80, #2ed);
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
-.container .info {
+.net-wrapper {
+  position: relative;
+  margin: 40px 20px;
+  border: 2px solid #ddd;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
+  padding: 10px;
+  border-image: linear-gradient(-45deg, #4b4be4, #e011d6) 20 20;
 }
 
-.container .info h1 {
+.net-wrapper::before {
+  content: "net-info";
+  position: absolute;
+  z-index: 10;
+  font-size: 30px;
+  color: white;
+  top: -20px;
+  background-color: #343434;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #e011d6;
+}
+
+.receive-detail,
+.send-detail {
+  height: 50px;
   text-align: center;
-  color: white;
-}
-.container .info .resicive {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 300px;
-}
-
-.container .info .resicive .detail {
-  margin-left: 10px;
-  color: white;
-}
-
-.container .info .send {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 300px;
-}
-
-.container .info .send .detail {
-  margin-left: 10px;
-  color: white;
+  background: linear-gradient(-45deg, #4b4be4, #e011d6);
+  -webkit-background-clip: text;
+  color: transparent;
 }

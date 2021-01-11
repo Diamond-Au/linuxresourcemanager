@@ -22,7 +22,7 @@ function createWindow() {
   })
   win.setMenu(menu)
 
-  win.loadFile('./index.html');
+  win.loadFile('./tem/source/index.html')
   win.webContents.openDevTools();
 
   // source page

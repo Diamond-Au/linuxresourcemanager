@@ -27,7 +27,20 @@
       </div>
 
       <!-- the display of net -->
-      <div class="net-wrapper"></div>
+      <div class="net-wrapper">
+        <div class="receive-info">
+          <div
+            class="receive"
+            id="receive"
+            style="width: 300px; height: 300px"
+          ></div>
+          <div class="receive-detail" id="receive-detail"></div>
+        </div>
+        <div class="send-info">
+          <div class="send" id="send" style="width: 300px; height: 300px"></div>
+          <div class="send-detail" id="send-detail"></div>
+        </div>
+      </div>
     </div>
   </body>
   <script>
@@ -36,19 +49,25 @@
       getComputerSwapInfo,
       getComputerMemotyInfo,
       kbToGB,
+      byteToMB,
     } = require("../../utils/index.js");
     const { Emitter } = require("../../utils/events.js");
-    const { getSwapOpstion } = require("../../config/config.js");
-    var resSpeed = document.getElementById("res-speed");
-    var resSum = document.getElementById("res-sum");
-    var sendSpeed = document.getElementById("send-speed");
-    var sendSum = document.getElementById("send-sum");
+    const {
+      getMemoryOrSawpOption,
+      getReceiveOrSendOption,
+    } = require("../../config/config.js");
     var swapDetail = document.getElementById("swap-detail");
     var memoryDetail = document.getElementById("memory-detail");
+    var receiveDetail = document.getElementById("receive-detail");
+    var sendDetail = document.getElementById("send-detail");
+
+    /*
+     * caculate the net speed
+     */
     function getNetSpeed(time) {
       let {
-        resiveBytes,
-        resivePacks,
+        receiveBytes,
+        receivePacks,
         sendBytes,
         sendPacks,
       } = getComputerNetInfo();
@@ -57,30 +76,43 @@
         let res = getComputerNetInfo();
 
         Emitter.emit("10s", {
-          resSpeed: parseInt((res.resiveBytes - resiveBytes) / time),
-          resivePacks: res.resivePacks,
+          resSpeed: parseInt((res.receiveBytes - receiveBytes) / time),
+          receiveBytes: res.receiveBytes,
           sendSpeed: parseInt((res.sendBytes - sendBytes) / time),
-          sendPacks: res.sendPacks,
+          sendBytes: res.sendBytes,
         });
-        resiveBytes = res.resiveBytes;
-        resivePaacks = res.resivePaacks;
+        receiveBytes = res.receiveBytes;
+        receivePacks = res.receivePacks;
         sendBytes = res.sendBytes;
         sendPacks = res.sendPacks;
       }, time * 1000);
     }
+
+    function getNetTemplate(data) {
+      let template = `
+        <span>正在${data.type}:${
+        "  " + parseInt(data.speed / 1024)
+      }KB/s</span></br>
+        <span>一共${data.type}:${
+        "  " + byteToMB(parseInt(data.sum), 1)
+      }MiB</span>
+      `;
+      return template;
+    }
+
     window.onload = function () {
-      // var netmyChart = echarts.init(document.getElementById("net"));
       var swapMyChart = echarts.init(document.getElementById("swap"));
       var memoryMyChart = echarts.init(document.getElementById("memory"));
+      var receiveMyChart = echarts.init(document.getElementById("receive"));
+      var sendMyChart = echarts.init(document.getElementById("send"));
+
       var swapInfo = getComputerSwapInfo();
       var memoryInfo = getComputerMemotyInfo();
-      console.log(memoryInfo);
       let used = parseInt(swapInfo.used);
       let all = parseInt(swapInfo.size);
       let left = all - used;
-      let swapOption = getSwapOpstion({ used, left });
+      let swapOption = getMemoryOrSawpOption({ used, left });
       let rate = ((used / all) * 100).toFixed(1) + "%";
-      console.log(rate);
       let swapTemplate = `
         <span>${(used / 1024).toFixed(2)}MiB (${rate})</span>
         <span>共${kbToGB(all, 2)}GiB</span>
@@ -90,18 +122,50 @@
       all = parseInt(memoryInfo[0]["MemTotal"]);
       left = parseInt(memoryInfo[0]["MemAvailable"]);
       used = all - left;
-      let memoryOption = getSwapOpstion({ used, left });
+      let memoryOption = getMemoryOrSawpOption({ used, left });
       rate = ((used / all) * 100).toFixed(1) + "%";
       let Cached = memoryInfo[0]["Cached"];
-      console.log(Cached);
       let memoryTemplate = `
         <span>${kbToGB(used, 2)}GiB(${rate}) 共${kbToGB(all, 1)}GiB</span></br>
         <span>cache: ${kbToGB(parseInt(Cached), 1)}GiB</span>
       `;
+
+      // deal with the net echarts
+
+      let reveiceOption = getReceiveOrSendOption();
+      let sendOption = getReceiveOrSendOption();
+
+      console.log(reveiceOption === sendDetail);
+
+      receiveMyChart.setOption(reveiceOption, true);
+      sendMyChart.setOption(sendOption, true);
+      getNetSpeed(1);
+      Emitter.on("10s", (data) => {
+        console.log(data);
+        let receiveTem = getNetTemplate({
+          type: "receive",
+          speed: data.resSpeed,
+          sum: data.receiveBytes,
+        });
+        let sendTmp = getNetTemplate({
+          type: "send",
+          speed: data.sendSpeed,
+          sum: data.sendBytes,
+        });
+
+        receiveDetail.innerHTML = receiveTem;
+        sendDetail.innerHTML = sendTmp;
+
+        reveiceOption.series[0].data[0].value = byteToMB(data.resSpeed, 1);
+        sendOption.series[0].data[0].value = byteToMB(data.sendSpeed, 1);
+        receiveMyChart.setOption(reveiceOption);
+        sendMyChart.setOption(sendOption);
+      });
+
+      // set the echarts
       memoryDetail.innerHTML = memoryTemplate;
       swapMyChart.setOption(swapOption);
       memoryMyChart.setOption(memoryOption);
-      console.log(used / all);
     };
   </script>
 </html>

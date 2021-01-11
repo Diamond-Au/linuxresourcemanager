@@ -1,5 +1,12 @@
 const ejs = require('ejs');
-const { getMemory } = require('./index')
+const { KBToMB } = require('./index')
+
+/**
+ * 
+ * @param {*} result 
+ * @returns
+ * @description deal with the OSinfo paeg render
+ */
 function renderOsInfo(result) {
   result = JSON.stringify(result[0]);
   result = result.split(" ");
@@ -29,6 +36,13 @@ function renderOsInfo(result) {
   return template
 }
 
+/**
+ * 
+ * @param {*} cpuInfoResult 
+ * @param {process length} length 
+ * @returns
+ * @description deal with the cpuinfopge render
+ */
 
 function renderCpuInfo(cpuInfoResult, length) {
   let template = `
@@ -53,7 +67,9 @@ function renderCpuInfo(cpuInfoResult, length) {
   return template;
 }
 
-
+/**
+ * @description deal with the processinfopage render
+ */
 
 function renderProcessInfo(processInfo) {
 
@@ -72,21 +88,23 @@ function renderProcessInfo(processInfo) {
             <span class="name"><%= item.Name%></span>
             <span class="pid"><%= item.Pid%></span>
             <span class="state"><%= item.State%></span>
-            <span class="memory"><%= getMemory(item["VmRSS"])%></span>
-            <span class="share-memeory-size"><%= getMemory(item["VmLib"])%></span>
+            <span class="memory"><%= KBToMB(item["VmRSS"])%></span>
+            <span class="share-memeory-size"><%= KBToMB(item["VmLib"])%></span>
           </div>
         <%}) %>
       </div>
     </div>
   `
-  template = ejs.render(template, { processInfo, getMemory })
+  template = ejs.render(template, { processInfo, KBToMB })
   return template;
 }
 
 
 
 
-
+/**
+ * @description deal with the innermeomry page render
+ */
 
 function renderInnerMemoryInfo(MemoryInfo) {
 
@@ -104,6 +122,9 @@ function renderInnerMemoryInfo(MemoryInfo) {
   return template
 }
 
+/**
+ * @description deal with the diskinfopage render
+ */
 
 function renderDiskinfo(diskinfo) {
   let template = `
@@ -123,4 +144,10 @@ function renderDiskinfo(diskinfo) {
 }
 
 
-module.exports = { renderOsInfo, renderCpuInfo, renderProcessInfo, renderInnerMemoryInfo, renderDiskinfo }
+module.exports = {
+  renderOsInfo,
+  renderCpuInfo,
+  renderProcessInfo,
+  renderInnerMemoryInfo,
+  renderDiskinfo
+}
