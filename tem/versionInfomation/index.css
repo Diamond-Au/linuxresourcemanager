@@ -3,7 +3,7 @@
   padding: 0;
 }
 body {
-  background-color:  #343434;
+  background-color: #343434;
   color: white;
 }
 
@@ -15,6 +15,7 @@ body {
   position: relative;
   padding-top: 30px;
   border-radius: 6px;
+  border-image: linear-gradient(-45deg, rgb(241, 184, 119), #2ed) 20 20;
 }
 
 .cpu-info::before {
@@ -23,7 +24,6 @@ body {
   position: absolute;
   top: -10px;
   background-color: #343434;
-
 }
 
 .version-info {
@@ -34,6 +34,7 @@ body {
   position: relative;
   padding-top: 30px;
   border-radius: 6px;
+  border-image: linear-gradient(45deg, rgb(241, 184, 119), #2ed) 20 20;
 }
 
 .version-info::before {
@@ -42,5 +43,4 @@ body {
   position: absolute;
   top: -10px;
   background-color: #343434;
-
 }
