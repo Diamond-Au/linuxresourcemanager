@@ -3,17 +3,35 @@
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
+  "email": "497350746@qq.com",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder --linux -l"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "electron": "^11.1.1",
+    "electron-builder": "^22.9.1",
     "jsdoc": "^3.6.6"
   },
   "dependencies": {
     "ejs": "^3.1.5"
+  },
+  "build": {
+    "appId": "497350746@qq.com",
+    "productName": "resourceManager",
+    "directories": {
+      "output": "build"
+    },
+    "linux": {
+      "target": [
+        "deb"
+      ],
+      "icon": "./icon.png",
+      "synopsis": "simple",
+      "maintainer": ".deb"
+    }
   }
 }
